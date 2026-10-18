@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels><fullName>Nimbus_Notif_Unavailable</fullName><language>en_US</language><protected>false</protected><shortDescription>Notification unavailable</shortDescription><value>This notification is no longer available.</value></labels>
+    <labels><fullName>Nimbus_Notif_Invalid_Store</fullName><language>en_US</language><protected>false</protected><shortDescription>Invalid store key</shortDescription><value>The store could not be verified.</value></labels>
+    <labels><fullName>Nimbus_Notif_Invalid_Cursor</fullName><language>en_US</language><protected>false</protected><shortDescription>Invalid cursor</shortDescription><value>The notification list position is no longer valid. Reload to continue.</value></labels>
+    <labels><fullName>Nimbus_Notif_Bell_Title</fullName><language>en_US</language><protected>false</protected><shortDescription>Bell button</shortDescription><value>Notifications</value></labels>
+    <labels><fullName>Nimbus_Notif_Bell_Unread</fullName><language>en_US</language><protected>false</protected><shortDescription>Bell unread aria</shortDescription><value>Notifications, {0} unread</value></labels>
+    <labels><fullName>Nimbus_Notif_Mark_All_Read</fullName><language>en_US</language><protected>false</protected><shortDescription>Mark all read</shortDescription><value>Mark all as read</value></labels>
+    <labels><fullName>Nimbus_Notif_Empty</fullName><language>en_US</language><protected>false</protected><shortDescription>Empty tray</shortDescription><value>You have no notifications.</value></labels>
+    <labels><fullName>Nimbus_Notif_Error</fullName><language>en_US</language><protected>false</protected><shortDescription>Load error</shortDescription><value>Notifications could not be loaded.</value></labels>
+    <labels><fullName>Nimbus_Notif_Retry</fullName><language>en_US</language><protected>false</protected><shortDescription>Retry</shortDescription><value>Try again</value></labels>
+    <labels><fullName>Nimbus_Notif_Load_More</fullName><language>en_US</language><protected>false</protected><shortDescription>Load more</shortDescription><value>Show older notifications</value></labels>
+    <labels><fullName>Nimbus_Notif_Loading</fullName><language>en_US</language><protected>false</protected><shortDescription>Loading</shortDescription><value>Loading notifications</value></labels>
+    <labels><fullName>Nimbus_Notif_Unread_Marker</fullName><language>en_US</language><protected>false</protected><shortDescription>Unread marker</shortDescription><value>Unread</value></labels>
+</CustomLabels>

@@ -1,0 +1,37 @@
+<template>
+    <div class="tray" role="dialog" aria-label={label.title} tabindex="-1" lwc:ref="panel">
+        <header class="tray__head">
+            <h2 class="tray__title">{label.title}</h2>
+            <template lwc:if={hasUnread}>
+                <button type="button" class="tray__link" onclick={handleMarkAll}>{label.markAll}</button>
+            </template>
+        </header>
+
+        <div class="tray__body" aria-busy={isLoading}>
+            <template lwc:if={hasError}>
+                <div class="tray__state" role="alert">
+                    <p>{label.error}</p>
+                    <button type="button" class="tray__link" onclick={handleRetry}>{label.retry}</button>
+                </div>
+            </template>
+            <template lwc:if={showEmpty}>
+                <p class="tray__state">{label.empty}</p>
+            </template>
+            <template lwc:if={showList}>
+                <ul class="tray__list">
+                    <template for:each={items} for:item="item">
+                        <li key={item.id} class="tray__row">
+                            <c-nimbus-notification-item item={item} onselect={handleSelect}></c-nimbus-notification-item>
+                        </li>
+                    </template>
+                </ul>
+            </template>
+            <template lwc:if={isLoading}>
+                <p class="tray__state" role="status">{label.loading}</p>
+            </template>
+            <template lwc:if={hasMore}>
+                <button type="button" class="tray__more" onclick={handleMore}>{label.more}</button>
+            </template>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,33 @@
+:host { display: inline-block; }
+.bell { position: relative; }
+.bell__button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--dxp-g-root-contrast, currentColor);
+    cursor: pointer;
+}
+.bell__button:hover { background: rgba(0, 0, 0, 0.06); }
+.bell__button:focus-visible { outline: 2px solid var(--dxp-g-brand, #0b5cab); outline-offset: 2px; }
+.bell__badge {
+    position: absolute;
+    top: 0.15rem;
+    right: 0.05rem;
+    min-width: 1.1rem;
+    height: 1.1rem;
+    padding: 0 0.28rem;
+    border-radius: 0.55rem;
+    background: var(--nimbus-notif-badge, #b3261e);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.1rem;
+    text-align: center;
+    box-sizing: border-box;
+}

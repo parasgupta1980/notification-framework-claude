@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Nimbus Notification Support</label>
+    <description>Read-only access to the request and delivery ledger.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <objectPermissions><allowCreate>false</allowCreate><allowDelete>false</allowDelete><allowEdit>false</allowEdit><allowRead>true</allowRead><modifyAllRecords>false</modifyAllRecords><object>Notification_Request__c</object><viewAllRecords>true</viewAllRecords></objectPermissions>
+    <objectPermissions><allowCreate>false</allowCreate><allowDelete>false</allowDelete><allowEdit>false</allowEdit><allowRead>true</allowRead><modifyAllRecords>false</modifyAllRecords><object>Notification_Delivery__c</object><viewAllRecords>true</viewAllRecords></objectPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Request__c.Account__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Request__c.Context_Json__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Request__c.Correlation_Id__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Request__c.Definition__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Request__c.EventKey__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Request__c.Expires_At__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Request__c.LastProcessedKey__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Request__c.Payload_Hash__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Request__c.Received_At__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Request__c.Status__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Request__c.Store_Key__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Attempt_Count__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Channel__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.DeliveryKey__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Evaluated_Policy_Version__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Expires_At__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Last_Error_Code__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Lease_Expires_At__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Lease_Token__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Next_Retry_At__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.ReadAt__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Recipient_Contact__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Recipient_User__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Rendered_Locale__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Request__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.SeenAt__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Status_Reason__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Status__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Store_Key__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Visible_At__c</field><readable>true</readable></fieldPermissions>
+</PermissionSet>

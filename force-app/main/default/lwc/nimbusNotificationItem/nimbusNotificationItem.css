@@ -1,0 +1,35 @@
+.item {
+    display: block;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+.item:hover { background: rgba(0, 0, 0, 0.04); }
+.item:focus-visible { outline: 2px solid var(--dxp-g-brand, #0b5cab); outline-offset: -2px; }
+.item--unread { background: rgba(11, 92, 171, 0.06); }
+.item--unavailable { cursor: default; opacity: 0.7; }
+.item__text { display: flex; flex-direction: column; gap: 0.2rem; }
+.item__title { font-weight: 600; font-size: 0.9rem; }
+.item__message { font-size: 0.85rem; line-height: 1.35; }
+.item__meta { display: flex; gap: 0.75rem; font-size: 0.75rem; color: rgba(0, 0, 0, 0.62); }
+.item__action { color: var(--dxp-g-brand, #0b5cab); font-weight: 600; }
+.item__dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-right: 0.45rem;
+    border-radius: 50%;
+    background: var(--dxp-g-brand, #0b5cab);
+}
+.item__sr {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}

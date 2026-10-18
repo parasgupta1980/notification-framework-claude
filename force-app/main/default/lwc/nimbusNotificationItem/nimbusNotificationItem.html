@@ -1,0 +1,14 @@
+<template>
+    <button type="button" class={rowClass} onclick={handleClick}>
+        <span class="item__text">
+            <span class="item__title">
+                <template lwc:if={isUnread}><span class="item__dot" aria-hidden="true"></span><span class="item__sr">{unreadLabel}. </span></template>{item.title}
+            </span>
+            <template lwc:if={item.message}><span class="item__message">{item.message}</span></template>
+            <span class="item__meta">
+                <time datetime={isoTime}>{displayTime}</time>
+                <template lwc:if={item.actionLabel}><span class="item__action">{item.actionLabel}</span></template>
+            </span>
+        </span>
+    </button>
+</template>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Nimbus Notification Activator</label>
+    <description>Activates notification definitions. Activation is audited.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <customPermissions><enabled>true</enabled><name>Nimbus_Notification_Activate</name></customPermissions>
+</PermissionSet>
