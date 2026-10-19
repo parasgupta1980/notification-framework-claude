@@ -8,8 +8,31 @@ public class NotificationTestDataFactory {
             ProfileId = p.Id, TimeZoneSidKey = 'GMT', LocaleSidKey = 'en_US',
             EmailEncodingKey = 'UTF-8', LanguageLocaleKey = 'en_US'
         );
+        satisfyOrgUserRules(usr);
         insert usr;
         return usr;
+    }
+
+    /**
+     * Some orgs enforce validation rules on internal Users (e.g. Business_Segment_PC3__c).
+     * Populated dynamically so this class compiles in orgs where the field does not exist.
+     */
+    private static void satisfyOrgUserRules(User usr) {
+        Schema.SObjectField f = Schema.SObjectType.User.fields.getMap().get('Business_Segment_PC3__c');
+        if (f == null) {
+            return;
+        }
+        Schema.DescribeFieldResult d = f.getDescribe();
+        if (d.getType() == Schema.DisplayType.PICKLIST || d.getType() == Schema.DisplayType.MULTIPICKLIST) {
+            for (Schema.PicklistEntry e : d.getPicklistValues()) {
+                if (e.isActive()) {
+                    usr.put(f, e.getValue());
+                    return;
+                }
+            }
+        } else if (d.getType() == Schema.DisplayType.STRING) {
+            usr.put(f, 'TEST'.left(d.getLength()));
+        }
     }
 
     public static Notification_Definition__c createDefinition(String key, String route) {
@@ -19,17 +42,22 @@ public class NotificationTestDataFactory {
             Name = key, Key__c = key, Version__c = 1, VersionKey__c = key + '|1', Group__c = g.Id,
             Status__c = 'Active', Target_Route__c = route
         );
+        Boolean previous = NotificationGuard.bypass;
+        NotificationGuard.bypass = true; // fixture is seeded already Active
         insert d;
+        NotificationGuard.bypass = previous;
         return d;
     }
 
     public static void addTranslation(Id definitionId, String locale, String title, String message) {
+        Boolean previous = NotificationGuard.bypass;
+        NotificationGuard.bypass = true; // the fixture definition is already Active
         insert new Notification_Translation__c(
             Name = locale, Definition__c = definitionId, Locale__c = locale,
-            DefinitionLocaleKey__c = String.valueOf(definitionId) + '|' + locale,
             Title__c = title, Message__c = message, Action_Label__c = 'Open',
             Is_Complete__c = true, Approval_Status__c = 'Approved'
         );
+        NotificationGuard.bypass = previous;
     }
 
     public static Notification_Request__c createRequest(Id definitionId, String eventId, String contextJson) {

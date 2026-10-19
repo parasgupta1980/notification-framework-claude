@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Administer Nimbus notification groups, definitions, translations and the delivery ledger.</description>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <label>Nimbus Notifications</label>
+    <navType>Standard</navType>
+    <tabs>Notification_Group__c</tabs>
+    <tabs>Notification_Definition__c</tabs>
+    <tabs>Notification_Translation__c</tabs>
+    <tabs>Notification_Request__c</tabs>
+    <tabs>Notification_Delivery__c</tabs>
+    <uiType>Lightning</uiType>
+</CustomApplication>

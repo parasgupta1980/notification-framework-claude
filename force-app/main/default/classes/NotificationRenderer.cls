@@ -11,7 +11,7 @@ public with sharing class NotificationRenderer {
     public static List<String> candidates(String lang) {
         List<String> out = new List<String>();
         if (String.isNotBlank(lang)) {
-            String normalized = lang.replace('-', '_');
+            String normalized = NotificationConfig.normalizeLocale(lang);
             out.add(normalized);
             if (normalized.contains('_')) {
                 out.add(normalized.substringBefore('_'));
@@ -64,11 +64,11 @@ public with sharing class NotificationRenderer {
             }
             Map<String, Object> ctx = parseContext(r.Request__r.Context_Json__c);
             item.unavailable = false;
-            item.title = merge(t.Title__c, ctx);
-            item.message = merge(t.Message__c, ctx);
+            item.title = mergeTokens(t.Title__c, ctx);
+            item.message = mergeTokens(t.Message__c, ctx);
             item.actionLabel = t.Action_Label__c;
             item.targetUrl = NotificationTargetValidator.safeOrNull(
-                merge(defs.get(defId)?.Target_Route__c, ctx)
+                mergeTokens(defs.get(defId)?.Target_Route__c, ctx)
             );
             items.add(item);
         }
@@ -88,7 +88,7 @@ public with sharing class NotificationRenderer {
 
     /** Replaces {{token}} with scalar context values; unknown tokens render empty. */
     @TestVisible
-    private static String merge(String template, Map<String, Object> ctx) {
+    private static String mergeTokens(String template, Map<String, Object> ctx) {
         if (String.isBlank(template)) {
             return template;
         }

@@ -3,6 +3,7 @@
     <label>Nimbus Notification Support</label>
     <description>Read-only access to the request and delivery ledger.</description>
     <hasActivationRequired>false</hasActivationRequired>
+    <applicationVisibilities><application>Nimbus_Notifications</application><visible>true</visible></applicationVisibilities>
     <objectPermissions><allowCreate>false</allowCreate><allowDelete>false</allowDelete><allowEdit>false</allowEdit><allowRead>true</allowRead><modifyAllRecords>false</modifyAllRecords><object>Notification_Request__c</object><viewAllRecords>true</viewAllRecords></objectPermissions>
     <objectPermissions><allowCreate>false</allowCreate><allowDelete>false</allowDelete><allowEdit>false</allowEdit><allowRead>true</allowRead><modifyAllRecords>false</modifyAllRecords><object>Notification_Delivery__c</object><viewAllRecords>true</viewAllRecords></objectPermissions>
     <fieldPermissions><editable>false</editable><field>Notification_Request__c.Account__c</field><readable>true</readable></fieldPermissions>
@@ -35,4 +36,6 @@
     <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Status__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Store_Key__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Visible_At__c</field><readable>true</readable></fieldPermissions>
+    <tabSettings><tab>Notification_Request__c</tab><visibility>Visible</visibility></tabSettings>
+    <tabSettings><tab>Notification_Delivery__c</tab><visibility>Visible</visibility></tabSettings>
 </PermissionSet>

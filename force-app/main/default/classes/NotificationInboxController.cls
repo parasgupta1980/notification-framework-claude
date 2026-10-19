@@ -19,7 +19,7 @@ public with sharing class NotificationInboxController {
     }
 
     @AuraEnabled
-    public static NotificationInboxDto.Page listMine(String storeKey, String lang, String cursor, Integer pageSize) {
+    public static NotificationInboxDto.InboxPage listMine(String storeKey, String lang, String cursor, Integer pageSize) {
         String store = NotificationStoreAccess.validate(storeKey);
         Integer size = pageSize == null ? DEFAULT_PAGE : pageSize;
         Datetime cursorAt;
@@ -40,7 +40,7 @@ public with sharing class NotificationInboxController {
             UserInfo.getUserId(), store, cursorAt, cursorId, size
         );
         Integer limitSize = Math.min(Math.max(size, 1), NotificationInboxSelector.MAX_PAGE);
-        NotificationInboxDto.Page page = new NotificationInboxDto.Page();
+        NotificationInboxDto.InboxPage page = new NotificationInboxDto.InboxPage();
         if (rows.size() > limitSize) {
             page.hasMore = true;
             rows.remove(rows.size() - 1);

@@ -6,5 +6,5 @@
     <referenceTo>User</referenceTo>
     <relationshipName>Notification_Deliveries</relationshipName>
     <relationshipLabel>Notification Deliveries</relationshipLabel>
-    <deleteConstraint>Restrict</deleteConstraint>
+    <deleteConstraint>SetNull</deleteConstraint>
 </CustomField>

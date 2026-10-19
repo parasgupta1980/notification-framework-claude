@@ -37,13 +37,13 @@ private class NotificationInboxControllerTest {
         NotificationTestDataFactory.createBell(req.Id, owner.Id, 'k2', 'US', now.addMinutes(-1));
 
         System.runAs(owner) {
-            NotificationInboxDto.Page de = NotificationInboxController.listMine('US', 'de', null, 20);
+            NotificationInboxDto.InboxPage de = NotificationInboxController.listMine('US', 'de', null, 20);
             System.assertEquals(2, de.items.size());
             System.assertEquals('Bestellung A100 versendet', de.items[0].title);
             System.assertEquals('/orders/A100', de.items[0].targetUrl);
             System.assert(de.items[0].visibleAt > de.items[1].visibleAt, 'newest first');
 
-            NotificationInboxDto.Page fr = NotificationInboxController.listMine('US', 'fr', null, 20);
+            NotificationInboxDto.InboxPage fr = NotificationInboxController.listMine('US', 'fr', null, 20);
             System.assertEquals('Order A100 shipped', fr.items[0].title, 'whole-bundle English fallback');
             System.assertEquals('en_US', fr.items[0].renderedLocale);
         }
@@ -57,16 +57,16 @@ private class NotificationInboxControllerTest {
             NotificationTestDataFactory.createBell(req.Id, owner.Id, 'p' + i, 'US', now.addMinutes(-i));
         }
         System.runAs(owner) {
-            NotificationInboxDto.Page first = NotificationInboxController.listMine('US', 'en_US', null, 2);
+            NotificationInboxDto.InboxPage first = NotificationInboxController.listMine('US', 'en_US', null, 2);
             System.assertEquals(2, first.items.size());
             System.assertEquals(true, first.hasMore);
-            NotificationInboxDto.Page second = NotificationInboxController.listMine('US', 'en_US', first.nextCursor, 2);
+            NotificationInboxDto.InboxPage second = NotificationInboxController.listMine('US', 'en_US', first.nextCursor, 2);
             System.assertEquals(2, second.items.size());
-            NotificationInboxDto.Page third = NotificationInboxController.listMine('US', 'en_US', second.nextCursor, 2);
+            NotificationInboxDto.InboxPage third = NotificationInboxController.listMine('US', 'en_US', second.nextCursor, 2);
             System.assertEquals(1, third.items.size());
             System.assertEquals(false, third.hasMore);
             Set<Id> seen = new Set<Id>();
-            for (NotificationInboxDto.Page p : new List<NotificationInboxDto.Page>{ first, second, third }) {
+            for (NotificationInboxDto.InboxPage p : new List<NotificationInboxDto.InboxPage>{ first, second, third }) {
                 for (NotificationInboxDto.Item i : p.items) {
                     System.assert(seen.add(i.id), 'no duplicates across pages');
                 }
@@ -173,6 +173,6 @@ private class NotificationInboxControllerTest {
     @IsTest
     static void mergeLeavesUnknownTokensEmptyAndIgnoresNestedValues() {
         Map<String, Object> ctx = new Map<String, Object>{ 'a' => 'X', 'n' => 5, 'obj' => new Map<String, Object>() };
-        System.assertEquals('X-5--', NotificationRenderer.merge('{{a}}-{{n}}-{{missing}}-{{obj}}', ctx));
+        System.assertEquals('X-5--', NotificationRenderer.mergeTokens('{{a}}-{{n}}-{{missing}}-{{obj}}', ctx));
     }
 }

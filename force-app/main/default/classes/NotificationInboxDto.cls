@@ -19,7 +19,7 @@ public with sharing class NotificationInboxDto {
         @AuraEnabled public String renderedLocale;
     }
 
-    public class Page {
+    public class InboxPage {
         @AuraEnabled public List<Item> items = new List<Item>();
         @AuraEnabled public String nextCursor;
         @AuraEnabled public Boolean hasMore = false;
