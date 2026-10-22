@@ -2,8 +2,9 @@
  * Definition lifecycle rules (design section 4):
  *  - new definitions start as Draft; Active and Retired are reached only by update;
  *  - activation and retirement need the Nimbus_Notification_Activate custom permission;
- *  - one Active version per Key;
- *  - an Active version is immutable (only Active to Retired is allowed); a change means a new version;
+ *  - one Active definition per Key (a Key may repeat on Draft and Retired records);
+ *  - an Active definition is immutable (only Active to Retired is allowed); a change means a new
+ *    definition record with the same Key, activated after the old one is retired;
  *  - activation requires an active Group with a matching source, an approved complete English
  *    translation for each enabled channel, valid tokens and a safe route;
  *  - activation is audited in Activated_By__c and Activated_At__c.
@@ -17,7 +18,6 @@ public without sharing class NotificationDefinitionHandler {
 
     private static final List<Schema.SObjectField> PROTECTED_FIELDS = new List<Schema.SObjectField>{
         Notification_Definition__c.Name, Notification_Definition__c.Key__c,
-        Notification_Definition__c.Version__c, Notification_Definition__c.VersionKey__c,
         Notification_Definition__c.Group__c, Notification_Definition__c.Mode__c,
         Notification_Definition__c.Bell_Enabled__c, Notification_Definition__c.Email_Enabled__c,
         Notification_Definition__c.Target_Route__c, Notification_Definition__c.Expiry_Days__c,
@@ -29,7 +29,6 @@ public without sharing class NotificationDefinitionHandler {
 
     public static void beforeInsert(List<Notification_Definition__c> rows) {
         for (Notification_Definition__c r : rows) {
-            stampVersionKey(r);
             if (String.isNotBlank(r.Status__c) && r.Status__c != DRAFT && !NotificationGuard.isBypassed()) {
                 r.addError('New definitions must be created as Draft and then activated.');
             }
@@ -44,12 +43,12 @@ public without sharing class NotificationDefinitionHandler {
             Notification_Definition__c o = oldMap.get(r.Id);
             if (o.Status__c == RETIRED) {
                 if (r.Status__c != RETIRED || changed(r, o)) {
-                    r.addError('A Retired definition cannot be changed. Create a new version.');
+                    r.addError('A Retired definition cannot be changed. Create a new definition.');
                 }
             } else if (o.Status__c == ACTIVE) {
                 if (r.Status__c == ACTIVE) {
                     if (changed(r, o)) {
-                        r.addError('An Active definition is immutable. Create a new version to change it.');
+                        r.addError('An Active definition is immutable. Create a new definition to change it.');
                     }
                 } else if (r.Status__c == RETIRED) {
                     if (!hasActivatePermission()) {
@@ -58,10 +57,9 @@ public without sharing class NotificationDefinitionHandler {
                         r.addError('Retire a definition without changing other fields.');
                     }
                 } else {
-                    r.addError('An Active definition cannot return to Draft. Create a new version.');
+                    r.addError('An Active definition cannot return to Draft. Create a new definition.');
                 }
             } else {
-                stampVersionKey(r);
                 editable.add(r);
                 if (r.Status__c == ACTIVE) {
                     if (hasActivatePermission()) {
@@ -88,12 +86,6 @@ public without sharing class NotificationDefinitionHandler {
 
     private static Boolean hasActivatePermission() {
         return NotificationGuard.isBypassed() || FeatureManagement.checkPermission(ACTIVATE_PERMISSION);
-    }
-
-    private static void stampVersionKey(Notification_Definition__c r) {
-        if (String.isNotBlank(r.Key__c) && r.Version__c != null) {
-            r.VersionKey__c = r.Key__c.trim() + '|' + String.valueOf(r.Version__c.intValue());
-        }
     }
 
     private static Boolean changed(Notification_Definition__c r, Notification_Definition__c o) {
@@ -170,7 +162,7 @@ public without sharing class NotificationDefinitionHandler {
         for (Notification_Definition__c r : rows) {
             List<String> problems = new List<String>();
             if (keyCount.get(r.Key__c) > 1 || alreadyActive.contains(r.Key__c)) {
-                problems.add('Key "' + r.Key__c + '" already has an Active version. Retire it first.');
+                problems.add('Key "' + r.Key__c + '" already has an Active definition. Retire it first.');
             }
             Notification_Group__c g = groups.get(r.Group__c);
             if (g == null || g.Active__c != true) {

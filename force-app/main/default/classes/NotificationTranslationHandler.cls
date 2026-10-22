@@ -1,6 +1,6 @@
 /**
  * Translation rules: normalizes the locale, fills the unique Definition + Locale key, and keeps
- * translations of Active or Retired definitions frozen (an edit means a new definition version).
+ * translations of Active or Retired definitions frozen (an edit means a new definition record).
  * Runs without sharing so the definition status check sees every row.
  */
 public without sharing class NotificationTranslationHandler {
@@ -31,7 +31,7 @@ public without sharing class NotificationTranslationHandler {
         for (Notification_Translation__c t : rows) {
             Notification_Translation__c o = oldMap == null ? null : oldMap.get(t.Id);
             if (isFrozen(statuses, t.Definition__c) || (o != null && isFrozen(statuses, o.Definition__c))) {
-                t.addError('Translations of an Active or Retired definition cannot be changed. Create a new definition version.');
+                t.addError('Translations of an Active or Retired definition cannot be changed. Create a new definition.');
             }
         }
     }

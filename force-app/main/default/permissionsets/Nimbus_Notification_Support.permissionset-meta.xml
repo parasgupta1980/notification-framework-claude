@@ -20,7 +20,6 @@
     <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Attempt_Count__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Channel__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.DeliveryKey__c</field><readable>true</readable></fieldPermissions>
-    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Evaluated_Policy_Version__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Expires_At__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Last_Error_Code__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Lease_Expires_At__c</field><readable>true</readable></fieldPermissions>

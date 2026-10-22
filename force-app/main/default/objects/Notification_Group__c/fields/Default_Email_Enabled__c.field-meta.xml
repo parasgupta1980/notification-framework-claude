@@ -4,4 +4,5 @@
     <label>Default Email Enabled</label>
     <type>Checkbox</type>
     <defaultValue>true</defaultValue>
+    <trackHistory>true</trackHistory>
 </CustomField>

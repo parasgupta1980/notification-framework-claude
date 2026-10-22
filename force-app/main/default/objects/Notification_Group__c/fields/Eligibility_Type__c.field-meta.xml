@@ -4,4 +4,5 @@
     <label>Eligibility Type</label>
     <type>Text</type>
     <length>80</length>
+    <trackHistory>true</trackHistory>
 </CustomField>

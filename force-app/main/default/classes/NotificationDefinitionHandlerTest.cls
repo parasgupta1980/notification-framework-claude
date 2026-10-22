@@ -8,9 +8,9 @@ private class NotificationDefinitionHandlerTest {
         insert grp;
     }
 
-    private static Notification_Definition__c draft(String key, Integer version) {
+    private static Notification_Definition__c draft(String key) {
         Notification_Definition__c d = new Notification_Definition__c(
-            Name = key, Key__c = key, Version__c = version, Group__c = grp.Id, Mode__c = 'Automatic',
+            Name = key, Key__c = key, Group__c = grp.Id, Mode__c = 'Automatic',
             Bell_Enabled__c = true, Required_Tokens__c = 'orderId', Target_Route__c = '/orders/{{orderId}}'
         );
         insert d;
@@ -58,12 +58,12 @@ private class NotificationDefinitionHandlerTest {
     }
 
     @IsTest
-    static void versionKeyIsStampedAndNewDefinitionsMustBeDraft() {
+    static void newDefinitionsMustBeDraft() {
         makeGroup('SRC');
-        Notification_Definition__c d = draft('vk', 3);
-        System.assertEquals('vk|3', [SELECT VersionKey__c FROM Notification_Definition__c WHERE Id = :d.Id].VersionKey__c);
+        Notification_Definition__c d = draft('vk');
+        System.assertEquals('Draft', [SELECT Status__c FROM Notification_Definition__c WHERE Id = :d.Id].Status__c);
         Notification_Definition__c bad = new Notification_Definition__c(
-            Name = 'bad', Key__c = 'bad', Version__c = 1, Group__c = grp.Id, Status__c = 'Active'
+            Name = 'bad', Key__c = 'bad', Group__c = grp.Id, Status__c = 'Active'
         );
         Database.SaveResult sr = Database.insert(bad, false);
         System.assert(!sr.isSuccess());
@@ -73,7 +73,7 @@ private class NotificationDefinitionHandlerTest {
     @IsTest
     static void activationNeedsTheCustomPermission() {
         makeGroup('SRC');
-        Notification_Definition__c d = draft('perm', 1);
+        Notification_Definition__c d = draft('perm');
         translation(d.Id, 'en_US', 'Order {{orderId}}', true, 'Approved');
         User plain = plainEditor('pln');
         System.runAs(plain) {
@@ -87,7 +87,7 @@ private class NotificationDefinitionHandlerTest {
     @IsTest
     static void activationSucceedsAndIsAudited() {
         makeGroup('SRC');
-        Notification_Definition__c d = draft('ok', 1);
+        Notification_Definition__c d = draft('ok');
         translation(d.Id, 'en_US', 'Order {{orderId}}', true, 'Approved');
         translation(d.Id, 'de', 'Bestellung {{orderId}}', true, 'Approved');
         User act = activator();
@@ -107,13 +107,13 @@ private class NotificationDefinitionHandlerTest {
         makeGroup('SRC');
         User act = activator();
 
-        Notification_Definition__c noEn = draft('noen', 1);
+        Notification_Definition__c noEn = draft('noen');
         translation(noEn.Id, 'de', 'Titel', true, 'Approved');
-        Notification_Definition__c unapproved = draft('unappr', 1);
+        Notification_Definition__c unapproved = draft('unappr');
         translation(unapproved.Id, 'en_US', 'T', true, 'Draft');
-        Notification_Definition__c badToken = draft('badtok', 1);
+        Notification_Definition__c badToken = draft('badtok');
         translation(badToken.Id, 'en_US', 'Hello {{surprise}}', true, 'Approved');
-        Notification_Definition__c badRoute = draft('badroute', 1);
+        Notification_Definition__c badRoute = draft('badroute');
         badRoute.Target_Route__c = 'https://evil.example/{{orderId}}';
         update badRoute;
         translation(badRoute.Id, 'en_US', 'T', true, 'Approved');
@@ -129,7 +129,7 @@ private class NotificationDefinitionHandlerTest {
 
         grp.Active__c = false;
         update grp;
-        Notification_Definition__c inactiveGroup = draft('nogrp', 1);
+        Notification_Definition__c inactiveGroup = draft('nogrp');
         translation(inactiveGroup.Id, 'en_US', 'T', true, 'Approved');
         System.runAs(act) {
             inactiveGroup.Status__c = 'Active';
@@ -141,7 +141,7 @@ private class NotificationDefinitionHandlerTest {
     static void emailChannelNeedsSubjectAndBodyAndRegistryIsEnforced() {
         makeGroup('SRC');
         User act = activator();
-        Notification_Definition__c d = draft('mail', 1);
+        Notification_Definition__c d = draft('mail');
         d.Bell_Enabled__c = false;
         d.Email_Enabled__c = true;
         update d;
@@ -151,7 +151,7 @@ private class NotificationDefinitionHandlerTest {
             System.assert(firstError(Database.update(d, false)).contains('email subject and body'));
         }
 
-        Notification_Definition__c none = draft('nochan', 1);
+        Notification_Definition__c none = draft('nochan');
         none.Bell_Enabled__c = false;
         update none;
         System.runAs(act) {
@@ -162,7 +162,7 @@ private class NotificationDefinitionHandlerTest {
         NotificationConfig.settingsOverride = new List<Notification_Setting__mdt>{
             new Notification_Setting__mdt(Type__c = 'MergeToken', Key__c = 'somethingElse', Active__c = true)
         };
-        Notification_Definition__c reg = draft('reg', 1);
+        Notification_Definition__c reg = draft('reg');
         translation(reg.Id, 'en_US', 'Order {{orderId}}', true, 'Approved');
         System.runAs(act) {
             reg.Status__c = 'Active';
@@ -171,38 +171,39 @@ private class NotificationDefinitionHandlerTest {
     }
 
     @IsTest
-    static void onlyOneActiveVersionPerKey() {
+    static void onlyOneActiveDefinitionPerKey() {
         makeGroup('SRC');
         User act = activator();
-        Notification_Definition__c v1 = draft('one', 1);
-        Notification_Definition__c v2 = draft('one', 2);
-        translation(v1.Id, 'en_US', 'Order {{orderId}}', true, 'Approved');
-        translation(v2.Id, 'en_US', 'Order {{orderId}}', true, 'Approved');
+        // a Key may repeat on records: the replacement is a new definition with the same Key
+        Notification_Definition__c first = draft('one');
+        Notification_Definition__c second = draft('one');
+        translation(first.Id, 'en_US', 'Order {{orderId}}', true, 'Approved');
+        translation(second.Id, 'en_US', 'Order {{orderId}}', true, 'Approved');
         System.runAs(act) {
-            v1.Status__c = 'Active';
-            System.assert(Database.update(v1, false).isSuccess());
-            v2.Status__c = 'Active';
-            System.assert(firstError(Database.update(v2, false)).contains('already has an Active version'));
-            // retiring v1 frees the key
-            v1 = [SELECT Id, Status__c FROM Notification_Definition__c WHERE Id = :v1.Id];
-            v1.Status__c = 'Retired';
-            System.assert(Database.update(v1, false).isSuccess());
-            System.assert(Database.update(v2, false).isSuccess());
+            first.Status__c = 'Active';
+            System.assert(Database.update(first, false).isSuccess());
+            second.Status__c = 'Active';
+            System.assert(firstError(Database.update(second, false)).contains('already has an Active definition'));
+            // retiring the first frees the key
+            first = [SELECT Id, Status__c FROM Notification_Definition__c WHERE Id = :first.Id];
+            first.Status__c = 'Retired';
+            System.assert(Database.update(first, false).isSuccess());
+            System.assert(Database.update(second, false).isSuccess());
         }
     }
 
     @IsTest
-    static void twoVersionsOfTheSameKeyInOneBatchCannotBothActivate() {
+    static void twoDefinitionsOfTheSameKeyInOneBatchCannotBothActivate() {
         makeGroup('SRC');
         User act = activator();
-        Notification_Definition__c v1 = draft('batch', 1);
-        Notification_Definition__c v2 = draft('batch', 2);
-        translation(v1.Id, 'en_US', 'Order {{orderId}}', true, 'Approved');
-        translation(v2.Id, 'en_US', 'Order {{orderId}}', true, 'Approved');
+        Notification_Definition__c a = draft('batch');
+        Notification_Definition__c b = draft('batch');
+        translation(a.Id, 'en_US', 'Order {{orderId}}', true, 'Approved');
+        translation(b.Id, 'en_US', 'Order {{orderId}}', true, 'Approved');
         System.runAs(act) {
-            v1.Status__c = 'Active';
-            v2.Status__c = 'Active';
-            List<Database.SaveResult> res = Database.update(new List<Notification_Definition__c>{ v1, v2 }, false);
+            a.Status__c = 'Active';
+            b.Status__c = 'Active';
+            List<Database.SaveResult> res = Database.update(new List<Notification_Definition__c>{ a, b }, false);
             System.assert(!res[0].isSuccess() && !res[1].isSuccess());
         }
     }
@@ -245,7 +246,7 @@ private class NotificationDefinitionHandlerTest {
         makeGroup('SRC');
         Notification_Definition__c active = NotificationTestDataFactory.createDefinition('del_a', '/x');
         System.assert(!Database.delete(active, false).isSuccess());
-        Notification_Definition__c d = draft('del_d', 1);
+        Notification_Definition__c d = draft('del_d');
         System.assert(Database.delete(d, false).isSuccess());
     }
 
@@ -253,11 +254,11 @@ private class NotificationDefinitionHandlerTest {
     static void definitionAndGroupSourceMustMatch() {
         makeGroup('SRC_A');
         Notification_Definition__c bad = new Notification_Definition__c(
-            Name = 'src', Key__c = 'src', Version__c = 1, Group__c = grp.Id, Source_Application__c = 'SRC_B'
+            Name = 'src', Key__c = 'src', Group__c = grp.Id, Source_Application__c = 'SRC_B'
         );
         System.assert(firstError(Database.insert(bad, false)).contains('Source Application'));
         Notification_Definition__c ok = new Notification_Definition__c(
-            Name = 'src2', Key__c = 'src2', Version__c = 1, Group__c = grp.Id, Source_Application__c = 'SRC_A'
+            Name = 'src2', Key__c = 'src2', Group__c = grp.Id, Source_Application__c = 'SRC_A'
         );
         System.assert(Database.insert(ok, false).isSuccess());
     }
@@ -265,7 +266,7 @@ private class NotificationDefinitionHandlerTest {
     @IsTest
     static void translationsAreNormalizedKeyedAndFrozenWithTheirDefinition() {
         makeGroup('SRC');
-        Notification_Definition__c d = draft('tr', 1);
+        Notification_Definition__c d = draft('tr');
         translation(d.Id, 'pt-BR', 'Titulo', false, 'Draft');
         Notification_Translation__c t = [SELECT Locale__c, DefinitionLocaleKey__c FROM Notification_Translation__c WHERE Definition__c = :d.Id];
         System.assertEquals('pt_BR', t.Locale__c);

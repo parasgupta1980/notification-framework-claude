@@ -7,7 +7,7 @@
     <sharingModel>Private</sharingModel>
     <externalSharingModel>Private</externalSharingModel>
     <enableActivities>false</enableActivities>
-    <enableHistory>false</enableHistory>
+    <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
     <enableSearch>false</enableSearch>
 </CustomObject>

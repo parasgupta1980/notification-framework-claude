@@ -12,7 +12,6 @@
     <fieldPermissions><editable>true</editable><field>Notification_Group__c.Active__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>true</editable><field>Notification_Group__c.Default_Bell_Enabled__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>true</editable><field>Notification_Group__c.Default_Email_Enabled__c</field><readable>true</readable></fieldPermissions>
-    <fieldPermissions><editable>true</editable><field>Notification_Group__c.Policy_Version__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>true</editable><field>Notification_Group__c.Preference_Type__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>true</editable><field>Notification_Group__c.Sort_Order__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>true</editable><field>Notification_Group__c.Source_Application__c</field><readable>true</readable></fieldPermissions>
@@ -26,7 +25,6 @@
     <fieldPermissions><editable>true</editable><field>Notification_Definition__c.Required_Tokens__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>true</editable><field>Notification_Definition__c.Status__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>true</editable><field>Notification_Definition__c.Target_Route__c</field><readable>true</readable></fieldPermissions>
-    <fieldPermissions><editable>true</editable><field>Notification_Definition__c.VersionKey__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>true</editable><field>Notification_Translation__c.Action_Label__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>true</editable><field>Notification_Translation__c.Approval_Status__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>true</editable><field>Notification_Translation__c.DefinitionLocaleKey__c</field><readable>true</readable></fieldPermissions>
@@ -50,7 +48,6 @@
     <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Attempt_Count__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Channel__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.DeliveryKey__c</field><readable>true</readable></fieldPermissions>
-    <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Evaluated_Policy_Version__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Expires_At__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Last_Error_Code__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Notification_Delivery__c.Lease_Expires_At__c</field><readable>true</readable></fieldPermissions>

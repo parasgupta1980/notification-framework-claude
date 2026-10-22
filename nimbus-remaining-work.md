@@ -15,6 +15,7 @@ Items marked **(suggested)** are my sequencing proposals, not decisions from the
 | 2 | Integrity and configuration: `NotificationKeys`, 4 triggers and handlers, definition lifecycle, `Notification_Setting__mdt` + `NotificationConfig`, admin app and tabs, new Group and Definition fields | Built. **Not yet deployment-validated.** `fix1` zip addresses the 6 failing `NotificationDefinitionHandlerTest` tests |
 
 ### Immediate to-do before starting slice 3
+- [ ] **Versioning removed (Definition Version/VersionKey, Group Policy Version, Delivery Evaluated Policy Version).** Deploy the source, then run `manifest/destructiveChanges.xml` if the org already has those fields (steps are in the file). Group field history tracking is now on for the policy fields. Delete the `removed-versioning-fields/` folder once deployed.
 - [ ] Deploy `nimbus-notifications-slice2-fix1.zip` to the sandbox.
 - [ ] Re-run `NotificationDefinitionHandlerTest`, then the full slice 2 set (`NotificationKeysTest`, `NotificationConfigTest`, `NotificationDefinitionHandlerTest`) and the slice 1 `NotificationInboxControllerTest`.
 - [ ] Decide on the Config_Editor change in fix1: Modify All on Group, Definition and Translation (needed because OWD is Private). Alternative: a sharing rule or a wider OWD for those three objects.
@@ -80,7 +81,7 @@ Remaining:
 - Store controls for a group stay unreleased until the NA/EMEA email inventory and mapping are approved (G2, S7 FR17).
 
 ### E. Ingress, request ledger, dispatcher, workers (20 to 30 d)
-- [ ] Bulk invocable ingress for Flow and Apex. Validate source, definition and store; pin the active definition version; insert Request keyed by source + business event ID.
+- [ ] Bulk invocable ingress for Flow and Apex. Validate source, definition and store; pin the active definition; insert Request keyed by source + business event ID.
 - [ ] Authenticated Apex REST endpoint. Reject client-supplied recipient lists, HTML, target URLs and Mandatory flags. Payload cap 32 KB (tunable). Return 202 only after durable acceptance, 409 for a conflicting payload on the same event key.
 - [ ] OAuth External Client App for the integration identity, scoped by source, event, definition and store.
 - [ ] Request state machine: Accepted, Resolving, Dispatching, then Completed, CompletedWithErrors, Rejected or Expired.

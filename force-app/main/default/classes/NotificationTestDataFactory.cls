@@ -39,7 +39,7 @@ public class NotificationTestDataFactory {
         Notification_Group__c g = new Notification_Group__c(Name = 'Group ' + key, Key__c = 'g_' + key);
         insert g;
         Notification_Definition__c d = new Notification_Definition__c(
-            Name = key, Key__c = key, Version__c = 1, VersionKey__c = key + '|1', Group__c = g.Id,
+            Name = key, Key__c = key, Group__c = g.Id,
             Status__c = 'Active', Target_Route__c = route
         );
         Boolean previous = NotificationGuard.bypass;

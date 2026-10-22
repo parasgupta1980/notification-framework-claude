@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Removes the versioning fields from an org that already has them. Two steps, in this order:
+     1. sf project deploy start --source-dir force-app
+        (Apex and permission sets stop referencing the fields)
+     2. sf project deploy start --manifest manifest/package.xml --post-destructive-changes manifest/destructiveChanges.xml
+     Skip step 2 if the org never had the fields (fresh scratch org). -->
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Notification_Definition__c.Version__c</members>
+        <members>Notification_Definition__c.VersionKey__c</members>
+        <members>Notification_Group__c.Policy_Version__c</members>
+        <members>Notification_Delivery__c.Evaluated_Policy_Version__c</members>
+        <name>CustomField</name>
+    </types>
+    <version>68.0</version>
+</Package>
